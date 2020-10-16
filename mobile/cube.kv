@@ -1,0 +1,235 @@
+#:kivy 1.9.1
+
+# 标题界面布局
+<TitleScreen>
+    name: 'title'
+    title_box: title_box_id
+
+    # 绘制底色
+	canvas.before:
+        Color:
+            rgba: .25, .25, .25, 1
+        Rectangle:
+			pos: root.pos
+            size: root.size
+
+    BoxLayout:
+        id: title_box_id
+        pos: root.size[0] * 0.35, root.size[1] * 0.25
+        size_hint_x: 0.3
+        size_hint_y: 0.5
+        spacing: 20
+        orientation: 'vertical'
+
+        # 游戏标题
+        Label:
+            bold: True
+            text: 'Cube Impact!'
+            size_hint_y: 1
+            font_size: '30sp'
+
+        # 简单难度
+        RoundedButton:
+            back_color: 0, 0.3, 1, 1
+            size_hint_y: 1
+            width: self.height * 2
+            on_release: root.manager.start_game(1)
+            text: 'EASY'
+            bold: True
+
+        # 普通难度
+        RoundedButton:
+            back_color: 0, 0.3, 1, .9
+            size_hint_y: 1
+            width: self.height * 2
+            on_release: root.manager.start_game(2)
+            text: 'NORMAL'
+            bold: True
+
+        # 困难难度
+        RoundedButton:
+            back_color: 0, 0.3, 1, .8
+            size_hint_y: 1
+            width: self.height * 2
+            on_release: root.manager.start_game(3)
+            text: 'HARD'
+            bold: True
+
+        Label:
+            text: ''
+            size_hint_y: 0.5
+
+        # 作者信息
+        Label:
+            text: 'Author: emhang'
+            size_hint_y: 0.5
+            font_size: '15sp'
+
+# 主游戏界面
+<MainScreen>
+    name: 'vscom'
+
+# 游戏界面
+<GameScreen>
+    com_board: com_board_id
+    com_sidebar: com_sidebar_id
+    board: board_id
+    sidebar: sidebar_id
+    orientation: 'horizontal'
+    padding: 20
+    spacing: 20
+
+    # 绘制底色
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # 电脑游戏窗口
+    Board:
+        id: com_board_id
+        size_hint_x: app.RATIO[0]
+
+    # 电脑信息边栏
+    Sidebar:
+        id: com_sidebar_id
+        size_hint_x: app.RATIO[1]
+        name: name_id_1
+        score: score_id_1
+        basic_score: basic_score_id_1
+        bonus_score: bonus_score_id_1
+        chain_score: chain_score_id_1
+        next_cube: next_cube_id_1
+        function_button: attack_button_id
+        orientation: 'vertical'
+
+        # 名称（AI强度）
+        Label:
+            id: name_id_1
+            bold: True
+            text: 'COM'
+            size_hint_y: 1
+
+        # 分数
+        Label:
+            id: score_id_1
+            bold: True
+            text: '0'
+            size_hint_y: 1
+
+        # 得分信息显示
+        Label:
+            id: basic_score_id_1
+            text: ''
+            size_hint_y: 0.3
+            font_size: '12sp'
+
+        Label:
+            id: bonus_score_id_1
+            text: ''
+            size_hint_y: 0.3
+            color: 0.8, 0.8, 0, 1
+            font_size: '12sp'
+
+        Label:
+            id: chain_score_id_1
+            text: ''
+            size_hint_y: 0.3
+            color: 1, 0.2, 0, 1
+            font_size: '12sp'
+
+        # 下一组方块
+        Label:
+            bold: True
+            text: 'Next'
+            size_hint_y: 1
+
+        Widget:
+            id: next_cube_id_1
+            size_hint_y: 3
+
+        # 攻击按键
+        Widget:
+            size_hint_y: 1
+            RoundedButton:
+                id: attack_button_id
+                back_color: 0.8, 0, 0, 1
+                on_press: root.attack()
+                text: 'A'
+                font_size: '20sp'
+                bold: True
+
+    # 玩家信息边栏
+    Sidebar:
+        id: sidebar_id
+        size_hint_x: app.RATIO[1]
+        name: name_id
+        score: score_id
+        basic_score: basic_score_id
+        bonus_score: bonus_score_id
+        chain_score: chain_score_id
+        next_cube: next_cube_id
+        function_button: defend_button_id
+        orientation: 'vertical'
+
+        # 玩家名称（YOU）
+        Label:
+            id: name_id
+            bold: True
+            text: 'YOU'
+            size_hint_y: 1
+
+        # 分数
+        Label:
+            id: score_id
+            bold: True
+            text: '0'
+            size_hint_y: 1
+
+        # 得分信息显示
+        Label:
+            id: basic_score_id
+            text: ''
+            size_hint_y: 0.3
+            font_size: '12sp'
+
+        Label:
+            id: bonus_score_id
+            text: ''
+            size_hint_y: 0.3
+            color: 0.8, 0.8, 0, 1
+            font_size: '12sp'
+
+        Label:
+            id: chain_score_id
+            text: ''
+            size_hint_y: 0.3
+            color: 1, 0.2, 0, 1
+            font_size: '12sp'
+
+        # 下一组方块
+        Label:
+            bold: True
+            text: 'Next'
+            size_hint_y: 1
+
+        Widget:
+            id: next_cube_id
+            size_hint_y: 3
+
+        # 防御按键
+        Widget:
+            size_hint_y: 1
+            RoundedButton:
+                id: defend_button_id
+                back_color: 0, 0.8, 0, 1
+                on_press: root.defend()
+                text: 'D'
+                font_size: '20sp'
+                bold: True
+    # 玩家游戏窗口
+    Board:
+        id: board_id
+        size_hint_x: app.RATIO[0]
